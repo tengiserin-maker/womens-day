@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мартын 8</title>
+
+<style>
+
+body{
+font-family:sans-serif;
+background:linear-gradient(#ffd6e7,#fff);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+text-align:center;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:25px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+width:320px;
+}
+
+img{
+width:180px;
+height:180px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.buttons{
+margin-top:25px;
+display:flex;
+justify-content:space-between;
+}
+
+button{
+flex:1;
+margin:5px;
+padding:12px;
+border:none;
+border-radius:15px;
+background:#ffe4ef;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#ffc7df;
+}
+
+.message{
+margin-top:20px;
+font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<img src="profile.jpg">
+
+<h2>Миний амьдралын гайхалтай бүсгүйчүүдэд</h2>
+
+<div class="buttons">
+
+<button onclick="show('sister')">👩 Эгч</button> <button onclick="show('friend')">💐 Найз</button> <button onclick="show('younger')">🎀 Дүү</button>
+
+</div>
+
+<div class="message" id="msg"></div>
+
+</div>
+
+<script>
+
+function show(type){
+
+let text="";
+
+if(type==="sister"){
+text="Хайрт эгчдээ Эмэгтэйчүүдийн эрхийг хамгаалах өдрийн мэнд хүргэе.";
+}
+
+if(type==="friend"){
+text="Хайрт найздаа Мартын 8-ны баярын мэнд хүргэе.";
+}
+
+if(type==="younger"){
+text="Хайрт дүүдээ баярын мэнд. Аз жаргалтай байгаарай.";
+}
+
+document.getElementById("msg").innerText=
