@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Мартын 8-ны мэнд</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Caveat:wght@400;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{
+      margin:0;min-height:100vh;font-family:'Poppins',sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,.9), transparent 28%),
+        linear-gradient(180deg,#fde6ef 0%,#fff3f8 45%,#ffffff 100%);
+      display:flex;justify-content:center;align-items:center;padding:18px;overflow-x:hidden;position:relative;
+    }
+    .sparkle{position:fixed;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.95);box-shadow:0 0 14px rgba(255,255,255,.95);animation:twinkle 3s infinite ease-in-out;pointer-events:none;z-index:0}
+    @keyframes twinkle{0%,100%{transform:scale(.45);opacity:.3}50%{transform:scale(1.4);opacity:1}}
+    .falling-bg{position:fixed;top:-40px;pointer-events:none;z-index:0;animation:floatFall linear infinite;opacity:.85}
+    @keyframes floatFall{0%{transform:translateY(-40px) rotate(0deg)}100%{transform:translateY(115vh) rotate(360deg)}}
+
+    .card{width:100%;max-width:760px;background:rgba(255,255,255,.94);border-radius:34px;padding:40px 34px 34px;box-shadow:0 22px 55px rgba(215,112,147,.18), inset 0 1px 0 rgba(255,255,255,.65);text-align:center;position:relative;z-index:2;overflow:hidden;border:1px solid rgba(255,192,203,.35);backdrop-filter:blur(10px)}
+    .card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.55),transparent 35%,rgba(255,192,203,.12) 70%,transparent 100%);pointer-events:none}
+    .page{display:none;animation:fadeUp .35s ease}.page.active{display:block}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .title-animated{font-size:44px;font-weight:800;color:#e91e63;animation:titleGlow 2.8s infinite ease-in-out;margin:10px 0 6px;text-shadow:0 3px 14px rgba(233,30,99,.12)}
+    @keyframes titleGlow{0%,100%{transform:scale(1);opacity:.92}50%{transform:scale(1.035);opacity:1}}
+    .subtitle{font-size:22px;font-weight:700;color:#d94680;margin-bottom:16px}
+
+    .hero-heart{width:min(72vw,360px);aspect-ratio:1/1;margin:0 auto 18px;overflow:hidden;clip-path:path("M 180 330 C 180 330, 20 210, 20 95 C 20 30, 72 0, 120 0 C 150 0, 171 18, 180 36 C 189 18, 210 0, 240 0 C 288 0, 340 30, 340 95 C 340 210, 180 330, 180 330 Z");box-shadow:0 16px 30px rgba(233,30,99,.18);background:#ffd6e4;border:6px solid #ffc5d9}
+    .hero-heart img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}
+
+    .buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:620px;margin:16px auto 0}
+    button{border:none;border-radius:17px;padding:16px 10px;background:#f7dce7;font-size:18px;font-weight:700;cursor:pointer;transition:.22s ease;box-shadow:0 6px 14px rgba(243,169,196,.2);position:relative;overflow:hidden}
+    button:hover{transform:translateY(-2px);background:#f3cad9}
+    button::after{content:"";position:absolute;inset:auto -40% 0 auto;width:120%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.45),transparent);transform:translateX(-180%)}
+    button:hover::after{transition:transform .7s ease;transform:translateX(120%)}
+
+    .page-wrap{margin-top:8px;border-radius:30px;padding:20px;position:relative;overflow:hidden;border:1px solid #f4d6e3;background:linear-gradient(180deg,#fffafd,#fff4f8)}
+    .page-wrap::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at top right, rgba(255,255,255,.9), transparent 26%);pointer-events:none}
+    .page-title{font-family:'Pacifico',cursive;font-size:40px;margin:8px 0 10px}
+    .title-sister{color:#e11d48}.title-friend{color:#f97316}.title-younger{color:#c026d3}
+
+    .scene{position:relative;height:128px;border-radius:26px;overflow:hidden;margin-bottom:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+    .scene-sister{background:linear-gradient(to bottom,#dff3ff,#fff0f6,#d8f0d7);border:1px solid #ffd0df}
+    .scene-friend{background:linear-gradient(to bottom,#fff4dd,#ffe9d7,#fff7f0);border:1px solid #ffd3b8}
+    .scene-younger{background:linear-gradient(to bottom,#f1e8ff,#f9efff,#e7dcff);border:1px solid #efc8ff}
+    .mountain{position:absolute;bottom:26px;width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:70px solid #97a8b8}
+    .mountain.m1{left:10px}.mountain.m2{right:14px;border-left-width:50px;border-right-width:50px;border-bottom:82px solid #7f93a6}
+    .ground{position:absolute;bottom:0;left:0;right:0;height:28px;background:#bce0b8}
+    .table{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:88px;height:8px;background:#fff;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    .coffee{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);width:10px;height:10px;background:#8b5a2b;border-radius:50%;animation:steam 1.6s infinite ease-in-out}
+    @keyframes steam{0%{box-shadow:0 0 0 rgba(255,255,255,0)}50%{box-shadow:0 -8px 0 rgba(255,255,255,.7)}100%{box-shadow:0 -14px 0 rgba(255,255,255,0)}}
+    .person{position:absolute;bottom:42px;width:26px;height:52px;animation:bob 2.2s infinite ease-in-out}
+    .person .head{width:18px;height:18px;border-radius:50%;background:#ffe3c2;margin:0 auto}.person .body{width:24px;height:24px;border-radius:12px 12px 8px 8px;margin:4px auto 0}.person .legs{display:flex;justify-content:center;gap:4px;margin-top:2px}.person .legs span{width:4px;height:16px;background:#666;border-radius:8px;display:block}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    .dance-floor{position:absolute;left:0;right:0;bottom:0;height:34px;background:#ffd7b3}.dancer{position:absolute;bottom:34px;width:24px;height:54px;animation:dance 1.2s infinite ease-in-out}.dancer .head{width:16px;height:16px;border-radius:50%;background:#ffe3c2;margin:0 auto}.dancer .body{width:22px;height:24px;border-radius:12px 12px 8px 8px;margin:4px auto 0}.dancer .legs{display:flex;justify-content:center;gap:4px;margin-top:2px}.dancer .legs span{width:4px;height:16px;background:#666;border-radius:8px;display:block}
+    @keyframes dance{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(4deg)}}
+    .light{position:absolute;width:10px;height:10px;border-radius:50%;background:#fff7a8;box-shadow:0 0 16px #fff7a8;animation:blink 1.4s infinite ease-in-out}
+    @keyframes blink{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+    .stadium{position:absolute;left:18px;right:18px;bottom:18px;height:60px;border:10px solid #b992ff;border-bottom:0;border-radius:120px 120px 0 0}.stadium-inner{position:absolute;left:34px;right:34px;bottom:18px;height:38px;border:8px solid #fff;border-bottom:0;border-radius:90px 90px 0 0;opacity:.9}.ball{position:absolute;width:14px;height:14px;border-radius:50%;background:#ffd54d;left:50%;bottom:54px;transform:translateX(-50%);animation:ballMove 2s infinite ease-in-out;box-shadow:0 0 12px rgba(255,213,77,.6)}
+    @keyframes ballMove{0%{transform:translateX(-50%) translateY(0)}25%{transform:translateX(-20px) translateY(-10px)}50%{transform:translateX(0) translateY(-18px)}75%{transform:translateX(20px) translateY(-10px)}100%{transform:translateX(-50%) translateY(0)}}
+
+    .letter-zone{position:relative;min-height:410px;margin-top:8px}
+    .envelope{position:absolute;left:50%;top:0;transform:translateX(-50%) scale(.42);width:100%;max-width:430px;height:380px;opacity:0;animation:envelopeApproach .65s ease forwards}
+    @keyframes envelopeApproach{0%{transform:translateX(-50%) translateY(46px) scale(.42);opacity:0}100%{transform:translateX(-50%) translateY(0) scale(1);opacity:1}}
+
+    .paper{position:absolute;left:50%;top:18px;transform:translateX(-50%) translateY(130px) scale(.92);width:94%;border-radius:30px;overflow:hidden;border:1px solid rgba(255,255,255,.9);background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,251,254,.99));box-shadow:0 20px 44px rgba(236,72,153,.14);opacity:.8;z-index:10;animation:paperRise .95s .55s forwards cubic-bezier(.22,1,.36,1)}
+    @keyframes paperRise{to{transform:translateX(-50%) translateY(-8px) scale(1);opacity:1}}
+    .paper::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 15%,rgba(255,255,255,.96),transparent 18%),repeating-linear-gradient(to bottom,transparent 0px,transparent 29px,rgba(232,210,255,.35) 30px,transparent 31px);opacity:.85;pointer-events:none}.paper::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%,rgba(244,114,182,.12) 50%,transparent 100%);opacity:.45;pointer-events:none}
+    .paper-inner{position:relative;z-index:2;padding:22px 16px 20px}.letter-heading{font-family:'Pacifico',cursive;font-size:32px;text-align:center;margin-bottom:10px;opacity:0;transform:rotateX(-60deg) translateY(24px);animation:letterOpen .85s .95s forwards}
+    @keyframes letterOpen{0%{opacity:0;transform:rotateX(-70deg) translateY(24px);filter:blur(6px)}100%{opacity:1;transform:rotateX(0) translateY(0);filter:blur(0)}}
+    .letter-text{font-family:'Caveat',cursive;font-size:29px;line-height:1.65;color:#5f4b56;text-align:left;word-break:break-word;white-space:pre-wrap}.letter-text span{opacity:0;animation:showChar .02s forwards}.letter-text.revealed span{opacity:1}
+    @keyframes showChar{to{opacity:1}}
+
+    .envelope-shell{position:absolute;inset:auto 0 0 0;height:190px;z-index:30;animation:envelopeDisappear .55s 1.35s forwards ease}
+    @keyframes envelopeDisappear{to{opacity:0;transform:scale(.86) translateY(18px);visibility:hidden;pointer-events:none}}
+    .env-bottom{position:absolute;inset:auto 0 0 0;height:122px;border-radius:0 0 30px 30px;background:linear-gradient(180deg,#ffd5e3,#f8bfd3);border:1px solid #f1bdd0;box-shadow:0 16px 30px rgba(244,114,182,.22)}
+    .env-left{position:absolute;bottom:92px;left:0;width:50%;height:96px;background:#f8bfd3;border-left:1px solid #f1bdd0;border-bottom:1px solid #f1bdd0;clip-path:polygon(0 0,100% 100%,0 100%)}
+    .env-right{position:absolute;bottom:92px;right:0;width:50%;height:96px;background:#f8bfd3;border-right:1px solid #f1bdd0;border-bottom:1px solid #f1bdd0;clip-path:polygon(100% 0,100% 100%,0 100%)}
+    .env-flap{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:96%;height:114px;transform-origin:top center;z-index:40;backface-visibility:hidden;animation:flapOpen .8s .45s forwards cubic-bezier(.22,1,.36,1), flapHide .28s 1.28s forwards ease}
+    .env-flap-shape{position:absolute;inset:0;background:linear-gradient(180deg,#f8bfd3,#f2a9c3);border:1px solid #f1bdd0;clip-path:polygon(50% 100%,0 0,100% 0);box-shadow:0 4px 12px rgba(0,0,0,.04)}
+    .seal{position:absolute;top:24px;left:50%;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.72)}
+    @keyframes flapOpen{to{transform:translateX(-50%) rotateX(-185deg)}}
+    @keyframes flapHide{to{opacity:0;visibility:hidden;pointer-events:none}}
+
+    .petal{position:absolute;top:-20px;font-size:24px;opacity:0;animation:petalFall linear forwards;pointer-events:none;z-index:50}
+    @keyframes petalFall{0%{transform:translateY(-20px) rotate(0deg) scale(.8);opacity:0}10%{opacity:1}100%{transform:translateY(360px) rotate(240deg) scale(1);opacity:.95}}
+    .back{margin-top:14px;width:100%;background:#f1e5ea;color:#555;font-weight:700}.tiny-note{margin-top:14px;font-size:15px;color:#8f7b86}
+
+    @media (max-width: 699px){
+      .card{padding:28px 18px 24px;max-width:520px}
+      .title-animated{font-size:34px}.subtitle{font-size:18px}
+      .hero-heart{width:min(78vw,280px)}
+      .buttons{gap:10px}.buttons button{font-size:15px;padding:13px 8px}
+      .page-title{font-size:31px}.letter-zone{min-height:340px}.envelope{max-width:330px;height:310px}
+      .letter-text{font-size:22px}
+    }
+  </style>
+</head>
+<body>
+  <div class="sparkle" style="top:8%; left:10%; animation-delay:0s;"></div>
+  <div class="sparkle" style="top:20%; left:82%; animation-delay:1s;"></div>
+  <div class="sparkle" style="top:72%; left:14%; animation-delay:2s;"></div>
+  <div class="sparkle" style="top:78%; left:88%; animation-delay:.5s;"></div>
+  <div class="sparkle" style="top:38%; left:6%; animation-delay:1.8s;"></div>
+  <div class="sparkle" style="top:48%; left:92%; animation-delay:2.4s;"></div>
+
+  <div class="falling-bg" style="left:6%; font-size:20px; animation-duration:14s; animation-delay:0s;">🌸</div>
+  <div class="falling-bg" style="left:18%; font-size:16px; animation-duration:18s; animation-delay:3s;">✨</div>
+  <div class="falling-bg" style="left:32%; font-size:22px; animation-duration:16s; animation-delay:1.5s;">🌷</div>
+  <div class="falling-bg" style="left:48%; font-size:18px; animation-duration:20s; animation-delay:4s;">🌸</div>
+  <div class="falling-bg" style="left:63%; font-size:20px; animation-duration:15s; animation-delay:2s;">✨</div>
+  <div class="falling-bg" style="left:78%; font-size:24px; animation-duration:17s; animation-delay:5s;">🌺</div>
+  <div class="falling-bg" style="left:90%; font-size:18px; animation-duration:19s; animation-delay:2.5s;">🌷</div>
+
+  <div class="card">
+    <style>
+      @media (min-width: 700px){
+        .card{max-width:900px;padding:48px 44px 40px}
+        .title-animated{font-size:52px}
+        .subtitle{font-size:24px}
+        .buttons{max-width:620px;margin:18px auto 0}
+        .heart-shell{width:430px;height:390px}
+        .heart-wrap{width:250px;height:250px}
+        .heart-wrap::before,.heart-wrap::after{width:250px;height:250px}
+        .heart-wrap::before{top:-128px}
+        .heart-wrap::after{left:125px}
+        .photo{width:360px;height:360px;top:-55px;left:-55px}
+      }
+    </style>
+    <div id="home" class="page active">
+      <div class="hero-heart">
+          <img src="profile.jpg.jpg" alt="profile" onerror="this.src='profile.jpg'">
+        </div>
+
+      <div class="title-animated">Мартын 8-ны мэнд</div>
+      <div class="subtitle">Миний амьдралын гайхалтай бүсгүйчүүдэд</div>
+
+      <div class="buttons">
+        <button onclick="openPage('sister')">👩 Эгч</button>
+        <button onclick="openPage('friend')">💐 Найз</button>
+        <button onclick="openPage('younger')">🎀 Дүү</button>
+      </div>
+
+      <div class="tiny-note">Сонголтоо дараад захидлаа нээгээрэй ✨</div>
+    </div>
+
+    <div id="sister" class="page">
+      <div class="page-wrap">
+        <div class="scene scene-sister">
+          <div class="mountain m1"></div><div class="mountain m2"></div><div class="table"></div><div class="coffee"></div>
+          <div class="person" style="left:34%;"><div class="head"></div><div class="body" style="background:#fb7185;"></div><div class="legs"><span></span><span></span></div></div>
+          <div class="person" style="right:30%; animation-delay:.5s;"><div class="head"></div><div class="body" style="background:#ec4899;"></div><div class="legs"><span></span><span></span></div></div>
+          <div class="ground"></div>
+        </div>
+        <div class="page-title title-sister">Хайрт эгчдээ</div>
+        <div class="letter-zone"><div class="envelope"><div class="paper"><div class="paper-inner"><div class="letter-heading title-sister">Хайрт эгчдээ</div><div class="letter-text" id="text-sister"></div></div></div><div class="envelope-shell"><div class="env-bottom"></div><div class="env-left"></div><div class="env-right"></div><div class="env-flap"><div class="env-flap-shape"></div><div class="seal"></div></div></div><div id="petals-sister"></div></div></div>
+        <button class="back" onclick="openPage('home')">← Буцах</button>
+      </div>
+    </div>
+
+    <div id="friend" class="page">
+      <div class="page-wrap">
+        <div class="scene scene-friend">
+          <div class="light" style="top:16px; left:16%; animation-delay:0s;"></div>
+          <div class="light" style="top:22px; left:34%; animation-delay:.4s;"></div>
+          <div class="light" style="top:12px; left:52%; animation-delay:.8s;"></div>
+          <div class="light" style="top:20px; left:70%; animation-delay:1.2s;"></div>
+          <div class="light" style="top:10px; left:86%; animation-delay:1.6s;"></div>
+          <div class="dancer" style="left:10%;"><div class="head"></div><div class="body" style="background:#fb923c;"></div><div class="legs"><span></span><span></span></div></div>
+          <div class="dancer" style="left:30%; animation-delay:.2s;"><div class="head"></div><div class="body" style="background:#f472b6;"></div><div class="legs"><span></span><span></span></div></div>
+          <div class="dancer" style="left:52%; animation-delay:.4s;"><div class="head"></div><div class="body" style="background:#fbbf24;"></div><div class="legs"><span></span><span></span></div></div>
+          <div class="dancer" style="left:74%; animation-delay:.6s;"><div class="head"></div><div class="body" style="background:#fb7185;"></div><div class="legs"><span></span><span></span></div></div>
+          <div class="dance-floor"></div>
+        </div>
+        <div class="page-title title-friend">Хайрт найздаа</div>
+        <div class="letter-zone"><div class="envelope"><div class="paper"><div class="paper-inner"><div class="letter-heading title-friend">Хайрт найздаа</div><div class="letter-text" id="text-friend"></div></div></div><div class="envelope-shell"><div class="env-bottom"></div><div class="env-left"></div><div class="env-right"></div><div class="env-flap"><div class="env-flap-shape"></div><div class="seal"></div></div></div><div id="petals-friend"></div></div></div>
+        <button class="back" onclick="openPage('home')">← Буцах</button>
+      </div>
+    </div>
+
+    <div id="younger" class="page">
+      <div class="page-wrap">
+        <div class="scene scene-younger">
+          <div class="stadium"></div><div class="stadium-inner"></div><div class="ball"></div>
+          <div class="person" style="left:30%; bottom:28px; transform:scale(.8);"><div class="head"></div><div class="body" style="background:#d946ef;"></div><div class="legs"><span></span><span></span></div></div>
+          <div class="person" style="right:28%; bottom:28px; animation-delay:.4s; transform:scale(.8);"><div class="head"></div><div class="body" style="background:#a855f7;"></div><div class="legs"><span></span><span></span></div></div>
+        </div>
+        <div class="page-title title-younger">Хайрт дүүдээ</div>
+        <div class="letter-zone"><div class="envelope"><div class="paper"><div class="paper-inner"><div class="letter-heading title-younger">Хайрт дүүдээ</div><div class="letter-text" id="text-younger"></div></div></div><div class="envelope-shell"><div class="env-bottom"></div><div class="env-left"></div><div class="env-right"></div><div class="env-flap"><div class="env-flap-shape"></div><div class="seal"></div></div></div><div id="petals-younger"></div></div></div>
+        <button class="back" onclick="openPage('home')">← Буцах</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const texts = {
+      sister: "Эмэгтэйчүүдийн эрхийг хамгаалах өдрийн хамгийн халуун, хамгийн нандин мэндчилгээг хайрт эгчдээ хүргэе 💖 Таны халамж, түшиг, ухаалаг үг, зөөлөн дулаан сэтгэл үргэлж миний амьдралын хамгийн үнэтэй гэрэл байсаар ирсэн. Хажууд минь байгаа чинь л өөрөө тайвшрал, ярилцах чинь л өөрөө урам, инээмсэглэл чинь л өөрөө аз жаргал байдаг шүү 🌷 Таны алхам бүхэн амжилт бүтээлээр дүүрч, зүрх сэтгэл тань үргэлж амгалан, нүдэнд тань үргэлж баярын оч гэрэлтэж, хүсэл мөрөөдөл бүхэн тань бодит биелэл болж байх болтугай ✨💐",
+      friend: "За хөөе миний хайртай найзаа 😂💖 Мартын 8-ны баярын супер мега ультра галзуу гоё мэнд хүргэе ээ 🤣🌷 Чи бол миний амьдралын хамгийн маазтай, хамгийн хөөрхөн, хамгийн солиотой energy-тай, нэг эхэлбэл уйлтал инээлгэдэг хүн шүү 😜🔥 Бид хоёрын шал дэмий юм ярьж инээдэг мөчүүд, гэнэт serious юм яриад 2 минутын дараа дахиад тэнэг юманд хаха гээд унадаг үеүүд, хаа хамаагүй дурсамж хүртэл гоё байдаг шүү 😂💃 Энэ өдөр mood чинь high, нүүрний чинь glow double, аз чинь full, данс чинь money-тай, гар чинь бэлэгтэй, ширээ чинь амттантай байг аа 🤣💸🍰 Чи угаасаа тасархай шүү. Өнөөдөр бүр ч илүү гялалзаад, ёстой нэг баяраа гоё тэмдэглээрэй 😆🎉💐",
+      younger: "Эмэгтэйчүүдийн эрхийг хамгаалах өдрийн хамгийн сайхан, хамгийн өнгөлөг мэндчилгээг хайрт дүүдээ хүргэе 🎀💝 Чи үргэлж өөрийнхөөрөө гэрэлтэж, чин сэтгэлээсээ инээмсэглэж, хүссэн мөрөөдөл бүхэндээ улам бүр ойртож яваарай ✨ Чиний замнал өөдрөг, өдөр бүхэн нь өнгөтэй, зүрх сэтгэл нь урам зориг, хайр, аз жаргалаар дүүрэн байх болтугай 🌸 Хүссэн бүхэн чинь чам руу инээмсэглэн ирж, хичээсэн болгон чинь хамгийн гоё үр дүн авчирч, амьдрал чинь баяр баясал, дурсамж, итгэл найдварын хамгийн сайхан тайз болон дэлгэрэх болтугай 💜🏐🌷"
+    };
+
+    function typeLetter(targetId, text){
+      const el = document.getElementById(targetId);
+      el.innerHTML = "";
+      [...text].forEach((char, i) => {
+        const span = document.createElement("span");
+        span.textContent = char;
+        span.style.animationDelay = (0.55 + i * 0.012) + "s";
+        el.appendChild(span);
+      });
+    }
+
+    function dropPetals(containerId, icon){
+      const box = document.getElementById(containerId);
+      box.innerHTML = "";
+      for(let i=0;i<20;i++){
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        petal.textContent = icon;
+        petal.style.left = (2 + ((i * 4.8) % 95)) + "%";
+        petal.style.animationDelay = ((i % 5) * 0.12) + "s";
+        petal.style.animationDuration = (2.8 + (i % 4) * 0.28) + "s";
+        petal.style.fontSize = (20 + (i % 4) * 3) + "px";
+        box.appendChild(petal);
+      }
+    }
+
+    function openPage(id){
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
+      if(id === 'sister'){
+        typeLetter('text-sister', texts.sister);
+        dropPetals('petals-sister', '🌹');
+      }
+      if(id === 'friend'){
+        typeLetter('text-friend', texts.friend);
+        dropPetals('petals-friend', '🌸');
+      }
+      if(id === 'younger'){
+        typeLetter('text-younger', texts.younger);
+        dropPetals('petals-younger', '🌷');
+      }
+    }
+  </script>
+</body>
+</html>
