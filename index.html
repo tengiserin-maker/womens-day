@@ -1,0 +1,331 @@
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const messages = {
+  sister: {
+    title: "Эгчдээ",
+    accent: "text-rose-500",
+    box: "from-rose-50 via-pink-50 to-white border-rose-100",
+    text: "Эмэгтэйчүүдийн эрхийг хамгаалах өдрийн хамгийн халуун, хамгийн нандин мэндчилгээг хайрт эгчдээ хүргэе 💖 Таны халамж, түшиг, ухаалаг үг, зөөлөн дулаан сэтгэл үргэлж миний амьдралын хамгийн үнэтэй гэрэл байсаар ирсэн. Хажууд минь байгаа чинь л өөрөө тайвшрал, ярилцах чинь л өөрөө урам, инээмсэглэл чинь л өөрөө аз жаргал байдаг шүү 🌷 Таны алхам бүхэн амжилт бүтээлээр дүүрч, зүрх сэтгэл тань үргэлж амгалан, нүдэнд тань үргэлж баярын оч гэрэлтэж, хүсэл мөрөөдөл бүхэн тань бодит биелэл болж байх болтугай ✨💐",
+  },
+  friend: {
+    title: "Найздаа",
+    accent: "text-orange-500",
+    box: "from-orange-50 via-amber-50 to-white border-orange-100",
+    text: "За хөөе миний хайртай найзаа 😂💖 Мартын 8-ны баярын супер мега ультра галзуу гоё мэнд хүргэе ээ 🤣🌷 Чи бол миний амьдралын хамгийн маазтай, хамгийн хөөрхөн, хамгийн солиотой energy-тай, нэг эхэлбэл уйлтал инээлгэдэг хүн шүү 😜🔥 Бид хоёрын шал дэмий юм ярьж инээдэг мөчүүд, гэнэт serious юм яриад 2 минутын дараа дахиад тэнэг юманд хаха гээд унадаг үеүүд, хаа хамаагүй дурсамж хүртэл гоё байдаг шүү 😂💃 Энэ өдөр mood чинь high, нүүрний чинь glow double, аз чинь full, данс чинь money-тай, гар чинь бэлэгтэй, ширээ чинь амттантай байг аа 🤣💸🍰 Чи угаасаа тасархай шүү. Өнөөдөр бүр ч илүү гялалзаад, ёстой нэг баяраа гоё тэмдэглээрэй 😆🎉💐",
+  },
+  younger: {
+    title: "Дүүдээ",
+    accent: "text-fuchsia-500",
+    box: "from-fuchsia-50 via-violet-50 to-white border-fuchsia-100",
+    text: "Эмэгтэйчүүдийн эрхийг хамгаалах өдрийн хамгийн сайхан, хамгийн өнгөлөг мэндчилгээг хайрт дүүдээ хүргэе 🎀💝 Чи үргэлж өөрийнхөөрөө гэрэлтэж, чин сэтгэлээсээ инээмсэглэж, хүссэн мөрөөдөл бүхэндээ улам бүр ойртож яваарай ✨ Чиний замнал өөдрөг, өдөр бүхэн нь өнгөтэй, зүрх сэтгэл нь урам зориг, хайр, аз жаргалаар дүүрэн байх болтугай 🌸 Хүссэн бүхэн чинь чам руу инээмсэглэн ирж, хичээсэн болгон чинь хамгийн гоё үр дүн авчирч, амьдрал чинь баяр баясал, дурсамж, итгэл найдварын хамгийн сайхан тайз болон дэлгэрэх болтугай 💜🏐🌷",
+  },
+};
+
+function Flower() {
+  const left = useMemo(() => Math.random() * 100, []);
+  const duration = useMemo(() => 6 + Math.random() * 5, []);
+  const delay = useMemo(() => Math.random() * 4, []);
+
+  return (
+    <motion.div
+      initial={{ y: -80, opacity: 0, x: 0, rotate: 0 }}
+      animate={{ y: "110vh", opacity: 1, x: [0, 20, -20, 10], rotate: 360 }}
+      transition={{ duration, delay, repeat: Infinity, ease: "linear" }}
+      className="absolute top-0 text-xl pointer-events-none"
+      style={{ left: `${left}%` }}
+    >
+      🌸
+    </motion.div>
+  );
+}
+
+function RoseRain() {
+  return (
+    <>
+      {Array.from({ length: 18 }).map((_, i) => {
+        const left = 4 + ((i * 5.3) % 92);
+        const delay = (i % 6) * 0.18;
+        const duration = 2.8 + (i % 5) * 0.35;
+        return (
+          <motion.div
+            key={i}
+            initial={{ y: -40, opacity: 0, rotate: 0 }}
+            animate={{ y: 420, opacity: [0, 1, 1, 0.9], rotate: [0, 50, -20, 90] }}
+            transition={{ duration, delay }}
+            className="absolute top-0 text-xl pointer-events-none"
+            style={{ left: `${left}%` }}
+          >
+            🌹
+          </motion.div>
+        );
+      })}
+    </>
+  );
+}
+
+function ScenePerson({ shirt = "bg-rose-400", delay = 0, scale = 1 }) {
+  return (
+    <motion.div
+      initial={{ y: 0 }}
+      animate={{ y: [0, -4, 0] }}
+      transition={{ duration: 2.4, delay, repeat: Infinity, ease: "easeInOut" }}
+      className="relative"
+      style={{ transform: `scale(${scale})` }}
+    >
+      <div className="w-6 h-6 rounded-full bg-amber-100 mx-auto shadow-sm" />
+      <div className={`w-8 h-10 rounded-t-2xl rounded-b-xl ${shirt} mt-1 shadow-sm`} />
+      <div className="flex justify-center gap-1 mt-1">
+        <div className="w-1 h-5 rounded-full bg-stone-500" />
+        <div className="w-1 h-5 rounded-full bg-stone-500" />
+      </div>
+    </motion.div>
+  );
+}
+
+function SisterScene() {
+  return (
+    <div className="relative h-28 rounded-[1.75rem] overflow-hidden bg-gradient-to-br from-sky-100 via-rose-50 to-emerald-50 border border-rose-100">
+      <motion.div
+        animate={{ x: [0, 8, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-2 left-6 w-16 h-8 rounded-full bg-white/90 blur-[1px]"
+      />
+      <motion.div
+        animate={{ x: [0, -10, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-4 right-8 w-20 h-9 rounded-full bg-white/80 blur-[1px]"
+      />
+      <div className="absolute bottom-0 left-0 right-0 h-10 bg-emerald-200/80" />
+      <div className="absolute bottom-7 left-3 w-20 h-14 bg-slate-300 clip-path-mountain" style={{ clipPath: "polygon(0% 100%, 50% 10%, 100% 100%)" }} />
+      <div className="absolute bottom-7 right-2 w-24 h-16 bg-slate-400/90" style={{ clipPath: "polygon(0% 100%, 50% 0%, 100% 100%)" }} />
+      <motion.div
+        animate={{ rotate: [0, 2, -2, 0] }}
+        transition={{ duration: 3, repeat: Infinity }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 w-20 h-4 rounded-full bg-white/90 shadow-sm"
+      />
+      <div className="absolute bottom-14 left-[34%]">
+        <ScenePerson shirt="bg-rose-400" delay={0.1} scale={0.92} />
+      </div>
+      <div className="absolute bottom-14 right-[30%]">
+        <ScenePerson shirt="bg-pink-500" delay={0.5} scale={0.98} />
+      </div>
+      <motion.div
+        animate={{ y: [0, -2, 0] }}
+        transition={{ duration: 1.8, repeat: Infinity }}
+        className="absolute bottom-[4.5rem] left-[46%] w-3 h-3 rounded-full bg-amber-700 shadow"
+      />
+      <motion.div
+        animate={{ opacity: [0.25, 0.6, 0.25], y: [0, -4, -8] }}
+        transition={{ duration: 1.6, repeat: Infinity }}
+        className="absolute bottom-[5.3rem] left-[46.5%] w-6 h-6 rounded-full border border-white/70"
+      />
+    </div>
+  );
+}
+
+function FriendScene() {
+  const dancers = [
+    { left: "8%", color: "bg-orange-400", delay: 0 },
+    { left: "28%", color: "bg-pink-400", delay: 0.2 },
+    { left: "50%", color: "bg-amber-400", delay: 0.4 },
+    { left: "72%", color: "bg-rose-400", delay: 0.6 },
+  ];
+
+  return (
+    <div className="relative h-28 rounded-[1.75rem] overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 border border-orange-100">
+      <div className="absolute inset-x-0 bottom-0 h-10 bg-orange-100" />
+      <div className="absolute inset-x-0 top-0 bottom-10 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_20%),radial-gradient(circle_at_80%_25%,rgba(255,255,255,0.75),transparent_18%),radial-gradient(circle_at_50%_10%,rgba(255,255,255,0.75),transparent_16%)]" />
+      {dancers.map((d, i) => (
+        <motion.div
+          key={i}
+          className="absolute bottom-8"
+          style={{ left: d.left }}
+          animate={{ y: [0, -10, 0], rotate: [-4, 4, -4] }}
+          transition={{ duration: 1.2, delay: d.delay, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="w-6 h-6 rounded-full bg-amber-100 mx-auto" />
+          <div className={`w-8 h-9 ${d.color} rounded-t-2xl rounded-b-lg mt-1`} />
+          <div className="relative flex justify-center mt-1">
+            <div className="w-1 h-5 rounded-full bg-stone-500 -rotate-12 mr-2" />
+            <div className="w-1 h-5 rounded-full bg-stone-500 rotate-12" />
+          </div>
+          <motion.div
+            className="absolute -top-3 -right-3 w-2 h-2 rounded-full bg-yellow-300"
+            animate={{ scale: [1, 1.8, 1], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.3, repeat: Infinity, delay: i * 0.15 }}
+          />
+        </motion.div>
+      ))}
+      <motion.div
+        animate={{ x: [-20, 20, -20] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-3 left-4 right-4 h-1 rounded-full bg-gradient-to-r from-pink-200 via-orange-300 to-yellow-200 opacity-80"
+      />
+    </div>
+  );
+}
+
+function YoungerScene() {
+  return (
+    <div className="relative h-28 rounded-[1.75rem] overflow-hidden bg-gradient-to-br from-violet-50 via-fuchsia-50 to-sky-50 border border-fuchsia-100">
+      <div className="absolute inset-x-0 bottom-0 h-10 bg-violet-100" />
+      <div className="absolute left-4 right-4 bottom-4 h-16 rounded-t-[999px] border-[10px] border-violet-300/90 border-b-0" />
+      <div className="absolute left-10 right-10 bottom-5 h-10 rounded-t-[999px] border-[8px] border-white border-b-0 opacity-90" />
+      <motion.div
+        animate={{ scale: [1, 1.08, 1] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+        className="absolute left-1/2 -translate-x-1/2 bottom-10 w-4 h-4 rounded-full bg-yellow-300 shadow"
+      />
+      <motion.div
+        animate={{ x: [0, 10, -6, 0], y: [0, -4, 0, 0] }}
+        transition={{ duration: 2.2, repeat: Infinity }}
+        className="absolute left-[35%] bottom-8"
+      >
+        <ScenePerson shirt="bg-fuchsia-400" delay={0.2} scale={0.75} />
+      </motion.div>
+      <motion.div
+        animate={{ x: [0, -8, 10, 0], y: [0, -3, 0, 0] }}
+        transition={{ duration: 2.4, repeat: Infinity }}
+        className="absolute right-[32%] bottom-8"
+      >
+        <ScenePerson shirt="bg-violet-400" delay={0.4} scale={0.75} />
+      </motion.div>
+      {Array.from({ length: 7 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bottom-7 w-1.5 rounded-full bg-violet-400/70"
+          style={{ left: `${18 + i * 10}%`, height: `${10 + (i % 3) * 5}px` }}
+          animate={{ y: [0, -3, 0] }}
+          transition={{ duration: 1 + i * 0.1, repeat: Infinity }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function SelectedContent({ type, onClose }) {
+  const selected = messages[type];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 12 }}
+      className={`mt-6 rounded-[2rem] bg-gradient-to-br ${selected.box} p-5 border shadow-sm relative overflow-hidden`}
+    >
+      {type === "sister" && <RoseRain />}
+
+      <div className="relative z-10">
+        {type === "sister" && <SisterScene />}
+        {type === "friend" && <FriendScene />}
+        {type === "younger" && <YoungerScene />}
+
+        <div className="mt-4 flex items-center justify-between gap-3">
+          <h2 className={`text-2xl font-bold ${selected.accent}`}>{selected.title}</h2>
+          <button
+            onClick={onClose}
+            className="text-xs px-3 py-1 rounded-full bg-white text-gray-500 border"
+          >
+            Хаах
+          </button>
+        </div>
+
+        <p className="mt-4 text-[15px] leading-8 text-gray-700">{selected.text}</p>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function WomensDayMiniSite() {
+  const [selected, setSelected] = useState(null);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-pink-100 via-rose-50 to-white flex items-center justify-center p-4 relative overflow-hidden">
+      {Array.from({ length: 16 }).map((_, i) => (
+        <Flower key={i} />
+      ))}
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10 w-full max-w-md bg-white/90 backdrop-blur rounded-[2rem] shadow-2xl p-6 border border-pink-100"
+      >
+        <div className="text-center">
+          <div className="mx-auto relative w-40 h-40">
+            <div className="absolute inset-0 rotate-45 rounded-[2.2rem] bg-pink-200/80" />
+            <div className="absolute top-0 left-0 w-20 h-20 rounded-full bg-pink-200/80" />
+            <div className="absolute top-0 right-0 w-20 h-20 rounded-full bg-pink-200/80" />
+            <div className="absolute inset-[6px] overflow-hidden rotate-45 rounded-[2rem] bg-pink-50 shadow-lg">
+              <img
+                src="/profile.jpg"
+                alt="Tengis"
+                className="w-[155%] h-[155%] object-cover -rotate-45 scale-[1.05] -translate-x-[15%] -translate-y-[12%]"
+              />
+            </div>
+          </div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            animate={{ opacity: [0.85, 1, 0.9, 1], y: [0, -2, 0], scale: [1, 1.02, 1] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+            className="mt-5 text-2xl font-bold text-rose-500"
+          >
+            Мартын 8-ны мэнд
+          </motion.h1>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 2.6, repeat: Infinity }}
+            className="mt-2 text-base font-semibold text-pink-500"
+          >
+            Миний амьдралын гайхалтай бүсгүйчүүдэд
+          </motion.div>
+
+          <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+            Эмэгтэйчүүдийн эрхийг хамгаалах өдрийн мэнд хүргэе 🌷
+          </p>
+        </div>
+
+        <div className="mt-8 grid grid-cols-3 gap-3">
+          <button
+            onClick={() => setSelected("sister")}
+            className="rounded-2xl bg-pink-50 hover:bg-pink-100 transition p-4 shadow-sm border border-pink-100 flex flex-col items-center gap-2"
+          >
+            <div className="w-8 h-8 rounded-full bg-rose-300" />
+            <div className="text-sm font-semibold text-gray-700">Эгч</div>
+          </button>
+
+          <button
+            onClick={() => setSelected("friend")}
+            className="rounded-2xl bg-rose-50 hover:bg-rose-100 transition p-4 shadow-sm border border-rose-100 flex flex-col items-center gap-2"
+          >
+            <div className="flex gap-1">
+              <div className="w-3 h-7 rounded-full bg-orange-300" />
+              <div className="w-3 h-7 rounded-full bg-pink-300" />
+              <div className="w-3 h-7 rounded-full bg-amber-300" />
+            </div>
+            <div className="text-sm font-semibold text-gray-700">Найз</div>
+          </button>
+
+          <button
+            onClick={() => setSelected("younger")}
+            className="rounded-2xl bg-fuchsia-50 hover:bg-fuchsia-100 transition p-4 shadow-sm border border-fuchsia-100 flex flex-col items-center gap-2"
+          >
+            <div className="w-8 h-8 rounded-full border-[6px] border-fuchsia-300 border-b-fuchsia-100" />
+            <div className="text-sm font-semibold text-gray-700">Дүү</div>
+          </button>
+        </div>
+
+        <AnimatePresence>
+          {selected && <SelectedContent type={selected} onClose={() => setSelected(null)} />}
+        </AnimatePresence>
+
+        <p className="mt-6 text-center text-xs text-gray-500">
+          Сонголтоо дараад тухайн хүнд зориулсан мэндчилгээг нээгээрэй ✨
+        </p>
+      </motion.div>
+    </div>
+  );
+}
