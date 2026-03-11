@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KIMI HAPPY BIRTHDAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #111;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(255, 117, 140, 0.16), transparent 18%),
+        radial-gradient(circle at 80% 20%, rgba(110, 168, 254, 0.14), transparent 18%),
+        radial-gradient(circle at 30% 85%, rgba(255, 207, 84, 0.14), transparent 20%),
+        radial-gradient(circle at 80% 75%, rgba(143, 244, 197, 0.14), transparent 18%),
+        #fff;
+      overflow: hidden;
+    }
+
+    .shell {
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .card {
+      width: min(100%, 860px);
+      min-height: min(92vh, 900px);
+      border-radius: 36px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(17,17,17,0.08);
+      box-shadow: 0 24px 80px rgba(17,17,17,0.08);
+      backdrop-filter: blur(10px);
+      padding: 28px 24px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .grain::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 25% 25%, #000 0.7px, transparent 0.7px),
+        radial-gradient(circle at 75% 75%, #000 0.6px, transparent 0.6px);
+      background-size: 18px 18px, 22px 22px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(17,17,17,0.08);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.8);
+    }
+
+    .mute-btn {
+      border: 1px solid rgba(17,17,17,0.08);
+      background: rgba(255,255,255,0.9);
+      color: #111;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .mute-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(17,17,17,0.08); }
+
+    .hero {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(17,17,17,0.56);
+      font-weight: 800;
+    }
+
+    .title {
+      margin: 10px 0 0;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 7vw, 72px);
+      line-height: 0.98;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #111;
+    }
+
+    .title .soft {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: clamp(12px, 2.2vw, 16px);
+      margin-top: 16px;
+      font-weight: 800;
+      color: rgba(17,17,17,0.52);
+    }
+
+    .sub {
+      margin: 18px auto 0;
+      max-width: 580px;
+      font-size: clamp(14px, 2.6vw, 19px);
+      line-height: 1.7;
+      color: rgba(17,17,17,0.78);
+      font-weight: 500;
+    }
+
+    .stage {
+      position: relative;
+      height: min(58vh, 560px);
+      margin-top: 24px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .glow {
+      position: absolute;
+      bottom: 68px;
+      width: min(74vw, 520px);
+      height: min(16vw, 110px);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,214,102,0.32), rgba(255,214,102,0.04) 62%, transparent 72%);
+      filter: blur(12px);
+      transform: translateY(8px);
+      pointer-events: none;
+    }
+
+    .cake-line {
+      position: absolute;
+      bottom: 34px;
+      width: min(80vw, 560px);
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(17,17,17,0.12), transparent);
+    }
+
+    .candle-wrap {
+      position: relative;
+      width: min(42vw, 210px);
+      height: min(68vw, 430px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      transition: transform 1.1s cubic-bezier(.22,1,.36,1), opacity .6s ease;
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .candle-wrap.zoomed {
+      transform: scale(1.08) translateY(-10px);
+    }
+
+    .candle {
+      position: relative;
+      width: min(22vw, 120px);
+      height: min(56vw, 320px);
+      border-radius: 28px 28px 18px 18px;
+      background: linear-gradient(180deg, #fff 0%, #fff 14%, #f7f7f7 100%);
+      border: 1px solid rgba(17,17,17,0.1);
+      box-shadow:
+        inset 12px 0 24px rgba(255,255,255,0.96),
+        inset -12px 0 24px rgba(17,17,17,0.04),
+        0 24px 40px rgba(17,17,17,0.08);
+      overflow: hidden;
+    }
+
+    .candle::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, transparent 0, rgba(255,105,180,0.16) 14%, transparent 26%),
+        linear-gradient(90deg, transparent 32%, rgba(255,215,0,0.18) 44%, transparent 56%),
+        linear-gradient(90deg, transparent 62%, rgba(0,191,255,0.16) 74%, transparent 86%);
+      opacity: .9;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .candle-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 18px;
+      background: linear-gradient(180deg, #fafafa, #ececec);
+      border-bottom: 1px solid rgba(17,17,17,0.07);
+    }
+
+    .candle-text {
+      position: absolute;
+      inset: 32px 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 900;
+      color: #111;
+      font-size: clamp(16px, 3vw, 24px);
+      line-height: 1.12;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      text-orientation: mixed;
+    }
+
+    .wick {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      width: 4px;
+      height: 22px;
+      background: #111;
+      border-radius: 999px;
+      transform: translateX(-50%);
+      z-index: 3;
+    }
+
+    .flame {
+      position: absolute;
+      left: 50%;
+      top: -72px;
+      width: 34px;
+      height: 58px;
+      transform: translateX(-50%);
+      z-index: 4;
+      filter: drop-shadow(0 0 16px rgba(255, 184, 0, 0.45));
+      transition: opacity .35s ease, transform .35s ease;
+    }
+
+    .flame.hidden {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.4) translateY(8px);
+    }
+
+    .flame-outer,
+    .flame-inner {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform-origin: center bottom;
+      border-radius: 50% 50% 42% 42% / 56% 56% 44% 44%;
+    }
+
+    .flame-outer {
+      width: 34px;
+      height: 58px;
+      transform: translateX(-50%);
+      background: radial-gradient(circle at 50% 24%, #fff7c8 0%, #ffd56b 24%, #ff9b2f 60%, #ff6a00 100%);
+      animation: flicker 1.25s infinite ease-in-out;
+    }
+
+    .flame-inner {
+      width: 16px;
+      height: 28px;
+      transform: translateX(-50%);
+      bottom: 8px;
+      background: radial-gradient(circle at 50% 28%, #ffffff 0%, #fff7d6 35%, #ffe28a 100%);
+      animation: flickerInner 1s infinite ease-in-out;
+    }
+
+    @keyframes flicker {
+      0%, 100% { transform: translateX(-50%) rotate(-2deg) scale(1); }
+      20% { transform: translateX(-50%) rotate(2deg) scale(1.04, 0.98); }
+      45% { transform: translateX(-50%) rotate(-3deg) scale(0.98, 1.05); }
+      70% { transform: translateX(-50%) rotate(3deg) scale(1.02, 0.96); }
+    }
+
+    @keyframes flickerInner {
+      0%,100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(0.92, 1.08); }
+    }
+
+    .whisper {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(86%, 720px);
+      text-align: center;
+      font-size: clamp(14px, 2.6vw, 18px);
+      color: rgba(17,17,17,0.74);
+      line-height: 1.7;
+      font-weight: 600;
+    }
+
+    .blow-msg {
+      position: absolute;
+      inset: 50% 20px auto 20px;
+      transform: translateY(-50%) scale(0.88);
+      text-align: center;
+      font-size: clamp(28px, 9vw, 88px);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+      color: #111;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 8;
+      text-transform: uppercase;
+    }
+
+    .blow-msg.show {
+      animation: popMsg 1.6s ease forwards;
+    }
+
+    @keyframes popMsg {
+      0% { opacity: 0; transform: translateY(-50%) scale(0.82); }
+      20% { opacity: 1; transform: translateY(-50%) scale(1); }
+      70% { opacity: 1; transform: translateY(-50%) scale(1); }
+      100% { opacity: 0; transform: translateY(-50%) scale(1.08); }
+    }
+
+    .smoke {
+      position: absolute;
+      left: 50%;
+      top: -82px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(120,120,120,0.2);
+      filter: blur(4px);
+      opacity: 0;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .smoke.show {
+      animation: smokeRise 2s ease forwards;
+    }
+
+    @keyframes smokeRise {
+      0% { opacity: 0; transform: translateX(-50%) translateY(0) scale(0.6); }
+      20% { opacity: 0.45; }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-70px) scale(2.7); }
+    }
+
+    .confetti {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9;
+    }
+
+    .piece {
+      position: absolute;
+      top: 58%;
+      width: 10px;
+      height: 18px;
+      opacity: 0;
+      border-radius: 2px;
+      transform-origin: center;
+    }
+
+    .piece.fire {
+      animation: confettiBlast 2.6s cubic-bezier(.22,1,.36,1) forwards;
+    }
+
+    @keyframes confettiBlast {
+      0% { opacity: 0; transform: translate(0,0) rotate(0deg) scale(0.8); }
+      8% { opacity: 1; }
+      100% { opacity: 0; transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(1); }
+    }
+
+    .footer-note {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(17,17,17,0.4);
+      font-weight: 800;
+    }
+
+    @media (max-width: 700px) {
+      .card { min-height: 94vh; padding: 20px 14px 18px; }
+      .title { font-size: 34px; }
+      .subtitle { font-size: 18px; }
+      .hero { margin-top: 6px; }
+      .sub { font-size: 14px; }
+      .stage { height: 58vh; margin-top: 16px; }
+      .candle-wrap { width: 170px; height: 360px; }
+      .candle { width: 96px; height: 268px; }
+      .candle-text { font-size: 18px; inset: 28px 10px 18px; }
+      .whisper { top: 10px; width: 90%; }
+      .blow-msg { font-size: 42px; }
+      .footer-note { bottom: 10px; font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="sparkle" style="top:8%;left:12%;animation-delay:0s"></div>
+    <div class="sparkle" style="top:18%;left:82%;animation-delay:1.1s"></div>
+    <div class="sparkle" style="top:78%;left:20%;animation-delay:2.2s"></div>
+    <div class="sparkle" style="top:70%;left:88%;animation-delay:.7s"></div>
+    <div class="falling-bg" style="left:10%;font-size:18px;animation-duration:18s;animation-delay:0s;">✦</div>
+    <div class="falling-bg" style="left:22%;font-size:22px;animation-duration:21s;animation-delay:4s;">✿</div>
+    <div class="falling-bg" style="left:76%;font-size:18px;animation-duration:16s;animation-delay:1.5s;">✦</div>
+    <div class="falling-bg" style="left:88%;font-size:20px;animation-duration:20s;animation-delay:6s;">✿</div>
+
+    <div class="card grain">
+      <div class="topbar">
+        <div class="badge">Birthday Letter</div>
+        <button class="mute-btn" id="soundBtn">♪ Дуу асаах</button>
+      </div>
+
+      <div class="hero">
+        <div class="eyebrow">classic / minimal / odd</div>
+        <div class="title">KIMI<br>HAPPY BIRTHDAY<span class="soft">make a wish</span></div>
+        <div class="sub">Хүслээ шивнээд лаагаа үлээгээрэй.</div>
+      </div>
+
+      <div class="stage">
+        <div class="whisper">Нам гүмхэн хүслээ бодоод, лааны дөл рүү зөөлөн үлээгээрэй.</div>
+        <div class="glow"></div>
+        <div class="cake-line"></div>
+
+        <div class="candle-wrap" id="candleWrap">
+          <div class="candle">
+            <div class="candle-top"></div>
+            <div class="wick"></div>
+            <div class="flame" id="flame">
+              <div class="flame-outer"></div>
+              <div class="flame-inner"></div>
+            </div>
+            <div class="smoke" id="smoke"></div>
+            <div class="candle-text">KIMI HAPPY BIRTHDAY</div>
+          </div>
+        </div>
+
+        <div class="blow-msg" id="blowMsg">Үлээгээч<br>дуракаа</div>
+        <div class="confetti" id="confetti"></div>
+      </div>
+
+      <div class="footer-note">one wish · one candle · one moment</div>
+    </div>
+  </div>
+
+  <script>
+    const flame = document.getElementById('flame');
+    const smoke = document.getElementById('smoke');
+    const blowMsg = document.getElementById('blowMsg');
+    const confetti = document.getElementById('confetti');
+    const candleWrap = document.getElementById('candleWrap');
+    const soundBtn = document.getElementById('soundBtn');
+
+    let audioCtx = null;
+    let musicTimer = null;
+    let musicOn = false;
+    let blown = false;
+
+    function getCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      return audioCtx;
+    }
+
+    function tone(freq, when, dur, type = 'sine', vol = 0.02) {
+      const ctx = getCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, when);
+      gain.gain.setValueAtTime(0.0001, when);
+      gain.gain.linearRampToValueAtTime(vol, when + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(when);
+      osc.stop(when + dur + 0.03);
+    }
+
+    function ensureAudio() {
+      const ctx = getCtx();
+      if (ctx.state === 'suspended') ctx.resume();
+    }
+
+    function playSoftBar() {
+      ensureAudio();
+      const now = getCtx().currentTime + 0.02;
+      const notes = [392.0, 523.25, 659.25, 587.33];
+      notes.forEach((n, i) => tone(n, now + i * 0.52, 0.72, 'sine', 0.016));
+      tone(196.0, now, 2.1, 'triangle', 0.008);
+    }
+
+    function startMusic() {
+      if (musicOn) return;
+      musicOn = true;
+      playSoftBar();
+      musicTimer = setInterval(playSoftBar, 2100);
+      soundBtn.textContent = '♪ Дуу унтраах';
+    }
+
+    function stopMusic() {
+      if (musicTimer) clearInterval(musicTimer);
+      musicTimer = null;
+      musicOn = false;
+      soundBtn.textContent = '♪ Дуу асаах';
+    }
+
+    function toggleMusic(e) {
+      if (e) e.stopPropagation();
+      ensureAudio();
+      if (musicOn) stopMusic();
+      else startMusic();
+    }
+
+    function playNudgeSound() {
+      ensureAudio();
+      const now = getCtx().currentTime;
+      tone(440, now, 0.08, 'triangle', 0.03);
+      tone(587.33, now + 0.07, 0.08, 'triangle', 0.025);
+    }
+
+    function playBlowSound() {
+      ensureAudio();
+      const ctx = getCtx();
+      const now = ctx.currentTime;
+      const bufferSize = ctx.sampleRate * 0.45;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 1.8) * 0.5;
+      }
+      const source = ctx.createBufferSource();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+      filter.type = 'lowpass';
+      filter.frequency.value = 1400;
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.linearRampToValueAtTime(0.08, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+      source.buffer = buffer;
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      source.start(now);
+      source.stop(now + 0.46);
+    }
+
+    function playConfettiSound() {
+      ensureAudio();
+      const now = getCtx().currentTime;
+      [1046.5, 1318.5, 1567.98, 2093].forEach((n, i) => tone(n, now + i * 0.05, 0.18, 'triangle', 0.022));
+    }
+
+    function showBlowMessage() {
+      blowMsg.classList.add('show');
+      playNudgeSound();
+      setTimeout(() => blowMsg.classList.remove('show'), 1600);
+    }
+
+    function spawnConfetti() {
+      confetti.innerHTML = '';
+      const colors = ['#ff4d6d', '#ffd166', '#06d6a0', '#4cc9f0', '#9b5de5', '#111111'];
+      for (let i = 0; i < 80; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'piece';
+        piece.style.left = (50 + (Math.random() * 16 - 8)) + '%';
+        piece.style.background = colors[i % colors.length];
+        piece.style.setProperty('--x', (Math.random() * 700 - 350) + 'px');
+        piece.style.setProperty('--y', (Math.random() * -420 - 120) + 'px');
+        piece.style.setProperty('--r', (Math.random() * 1080 - 540) + 'deg');
+        piece.style.width = (6 + Math.random() * 8) + 'px';
+        piece.style.height = (10 + Math.random() * 18) + 'px';
+        piece.style.animationDelay = (Math.random() * 0.12) + 's';
+        confetti.appendChild(piece);
+        requestAnimationFrame(() => piece.classList.add('fire'));
+      }
+    }
+
+    function blowOut() {
+      if (blown) return;
+      blown = true;
+      playBlowSound();
+      flame.classList.add('hidden');
+      smoke.classList.add('show');
+      setTimeout(() => {
+        spawnConfetti();
+        playConfettiSound();
+      }, 220);
+    }
+
+    soundBtn.addEventListener('click', toggleMusic);
+    document.addEventListener('click', () => {
+      ensureAudio();
+      startMusic();
+    }, { once: true });
+
+    setTimeout(showBlowMessage, 10000);
+    setTimeout(blowOut, 12000);
+
+    // optional manual blow by tap/click on candle
+    candleWrap.addEventListener('click', blowOut);
+    candleWrap.addEventListener('mouseenter', () => candleWrap.classList.add('zoomed'));
+    candleWrap.addEventListener('mouseleave', () => candleWrap.classList.remove('zoomed'));
+  </script>
+</body>
+</html>
