@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ЗӨВИЙГ ШҮГЭЛДЭГЧИД ТББ - 5 ЖИЛ</title>
+  <style>
+    :root {
+      --bg-1: #02092f;
+      --bg-2: #04114a;
+      --green: #59dc7c;
+      --green-soft: rgba(89, 220, 124, 0.35);
+      --white: #ffffff;
+      --text-soft: rgba(255,255,255,0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #02092f;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      position: relative;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 70% 30%, rgba(89,220,124,0.08), transparent 22%),
+        radial-gradient(circle at 50% 50%, rgba(89,220,124,0.05), transparent 30%),
+        linear-gradient(135deg, var(--bg-1) 0%, #02083b 45%, var(--bg-2) 100%);
+    }
+
+    canvas#particles {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.16) 100%);
+    }
+
+    .scene {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    .logo-stage {
+      position: relative;
+      width: min(1180px, 94vw);
+      height: min(580px, 84vh);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ambient-glow {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      left: 64%;
+      top: 43%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(89,220,124,0.28) 0%, rgba(89,220,124,0.08) 40%, transparent 72%);
+      filter: blur(18px);
+      opacity: 0;
+      animation: glowBloom 1.8s ease-out forwards;
+      animation-delay: 1.15s;
+    }
+
+    .whistle-origin {
+      position: absolute;
+      left: 58%;
+      top: 48%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+    }
+
+    .whistle {
+      width: 94px;
+      height: 52px;
+      opacity: 0;
+      transform: translateY(8px) scale(0.82);
+      filter: drop-shadow(0 0 10px rgba(89,220,124,0.15));
+      animation: whistleIn 0.85s cubic-bezier(.22,1,.36,1) forwards;
+      animation-delay: 0.15s;
+    }
+
+    .whistle svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .core-light {
+      position: absolute;
+      left: 88%;
+      top: 51%;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow:
+        0 0 12px rgba(89,220,124,0.95),
+        0 0 30px rgba(89,220,124,0.45);
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.2);
+      animation: corePop 0.9s ease-out forwards;
+      animation-delay: 0.7s;
+    }
+
+    .pulse {
+      position: absolute;
+      left: 88%;
+      top: 51%;
+      transform: translate(-50%, -50%) scale(0.2);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid rgba(89,220,124,0.7);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .pulse1 { animation: pulseWave 2.2s ease-out infinite; animation-delay: 0.85s; }
+    .pulse2 { animation: pulseWave 2.2s ease-out infinite; animation-delay: 1.35s; }
+    .pulse3 { animation: pulseWave 2.2s ease-out infinite; animation-delay: 1.85s; }
+
+    .logo-wrap {
+      position: relative;
+      z-index: 4;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 38px;
+    }
+
+    .text-block {
+      opacity: 0;
+      transform: translateY(22px);
+      animation: textRise 1s ease forwards;
+      animation-delay: 1.35s;
+    }
+
+    .title {
+      font-size: clamp(44px, 7vw, 98px);
+      font-weight: 900;
+      line-height: 0.96;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      margin-top: 14px;
+      font-size: clamp(19px, 2.4vw, 44px);
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .five-block {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      opacity: 0;
+      transform: scale(0.7) rotate(-7deg);
+      filter: blur(10px);
+      animation: fiveReveal 1.2s cubic-bezier(.22,1,.36,1) forwards;
+      animation-delay: 1s;
+    }
+
+    .five {
+      position: relative;
+      font-size: clamp(126px, 21vw, 300px);
+      line-height: 0.78;
+      font-weight: 900;
+      font-style: italic;
+      color: var(--green);
+      text-shadow:
+        0 0 14px rgba(89,220,124,0.18),
+        0 0 34px rgba(89,220,124,0.10);
+    }
+
+    .five::before {
+      content: "";
+      position: absolute;
+      width: 80%;
+      height: 19%;
+      right: -4%;
+      top: 4%;
+      border: 8px solid var(--green);
+      border-left: none;
+      border-bottom: none;
+      border-radius: 0 46px 0 0;
+      transform: rotate(-8deg);
+    }
+
+    .five::after {
+      content: "";
+      position: absolute;
+      width: 22%;
+      height: 7%;
+      right: 13%;
+      top: 14%;
+      background: #071043;
+      border: 5px solid var(--green);
+      border-radius: 4px;
+      transform: skew(-26deg) rotate(-8deg);
+    }
+
+    .eye {
+      position: absolute;
+      right: 18%;
+      top: 11%;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #06213b;
+      box-shadow: 0 0 8px rgba(255,255,255,0.12);
+    }
+
+    .eye::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      animation: eyeBlink 5s infinite;
+      animation-delay: 2.8s;
+      transform-origin: center;
+    }
+
+    .year {
+      color: var(--green);
+      font-size: clamp(22px, 2.5vw, 44px);
+      font-weight: 800;
+      margin-bottom: 22px;
+      opacity: 0;
+      transform: translateX(-12px);
+      animation: yearSlide 0.9s ease forwards;
+      animation-delay: 1.9s;
+    }
+
+    .scan-line {
+      position: absolute;
+      top: 10%;
+      left: 45%;
+      width: 12px;
+      height: 80%;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.75), transparent);
+      filter: blur(2px);
+      transform: translateX(0);
+      opacity: 0;
+      animation: scanPass 1.25s ease forwards;
+      animation-delay: 1.2s;
+      pointer-events: none;
+    }
+
+    .caption {
+      position: absolute;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      color: var(--text-soft);
+      font-size: clamp(12px, 1.05vw, 15px);
+      letter-spacing: 0.3px;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 2.5s;
+    }
+
+    .sound-button {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      z-index: 10;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      font-size: 13px;
+      transition: 0.25s ease;
+    }
+
+    .sound-button:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.28);
+    }
+
+    @keyframes whistleIn {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes corePop {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.15);
+      }
+      55% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.45);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    @keyframes pulseWave {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.25);
+      }
+      18% {
+        opacity: 0.95;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(7.9);
+      }
+    }
+
+    @keyframes fiveReveal {
+      0% {
+        opacity: 0;
+        transform: scale(0.68) rotate(-8deg);
+        filter: blur(10px);
+      }
+      65% {
+        opacity: 1;
+        transform: scale(1.05) rotate(1deg);
+        filter: blur(0);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes textRise {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes yearSlide {
+      from {
+        opacity: 0;
+        transform: translateX(-12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes glowBloom {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.55);
+      }
+      60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.15);
+      }
+      100% {
+        opacity: 0.65;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    @keyframes scanPass {
+      0% {
+        opacity: 0;
+        transform: translateX(-100px);
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(370px);
+      }
+    }
+
+    @keyframes eyeBlink {
+      0%, 44%, 48%, 100% {
+        transform: scaleY(1);
+        opacity: 1;
+      }
+      46% {
+        transform: scaleY(0.05);
+        opacity: 0.7;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 860px) {
+      .logo-wrap {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .text-block {
+        text-align: center;
+      }
+
+      .five-block {
+        align-items: center;
+      }
+
+      .year {
+        margin-bottom: 0;
+      }
+
+      .whistle-origin {
+        left: 50%;
+        top: 34%;
+      }
+
+      .ambient-glow {
+        left: 50%;
+        top: 34%;
+      }
+
+      .scan-line {
+        left: 50%;
+        top: 24%;
+        height: 48%;
+      }
+
+      @keyframes scanPass {
+        0% {
+          opacity: 0;
+          transform: translateX(-120px);
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateX(120px);
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <div class="vignette"></div>
+
+  <button class="sound-button" id="soundToggle">🔊 sound off</button>
+
+  <div class="scene">
+    <div class="logo-stage">
+      <div class="ambient-glow"></div>
+
+      <div class="whistle-origin">
+        <div class="whistle">
+          <svg viewBox="0 0 180 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 35C18 22 28 12 41 12H96C120 12 139 31 139 55C139 79 120 88 96 88H54C34 88 18 72 18 52V35Z"
+                  fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.65)" stroke-width="3"/>
+            <circle cx="138" cy="53" r="22" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.65)" stroke-width="3"/>
+            <circle cx="138" cy="53" r="8" fill="rgba(255,255,255,0.75)"/>
+            <path d="M40 32H88" stroke="rgba(255,255,255,0.7)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M40 46H74" stroke="rgba(255,255,255,0.35)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M46 64H84" stroke="rgba(255,255,255,0.2)" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="core-light"></div>
+        <div class="pulse pulse1"></div>
+        <div class="pulse pulse2"></div>
+        <div class="pulse pulse3"></div>
+      </div>
+
+      <div class="logo-wrap">
+        <div class="text-block">
+          <div class="title">ЗӨВИЙГ</div>
+          <div class="subtitle">ШҮГЭЛДЭГЧИД ТББ</div>
+        </div>
+
+        <div class="five-block">
+          <div class="five">
+            5
+            <div class="eye"></div>
+          </div>
+          <div class="year">ЖИЛ</div>
+        </div>
+      </div>
+
+      <div class="scan-line"></div>
+      <div class="caption">Whistle pulse • particle reveal • anniversary intro</div>
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // PARTICLE EFFECT
+    // =========================
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+
+    let w, h, dpr;
+    let particles = [];
+    let burstTriggered = false;
+    let lastTime = 0;
+
+    function resizeCanvas() {
+      dpr = window.devicePixelRatio || 1;
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function createAmbientParticles(count = 42) {
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: (Math.random() - 0.5) * 0.15,
+          size: Math.random() * 2.4 + 0.5,
+          alpha: Math.random() * 0.45 + 0.08,
+          life: Infinity,
+          mode: "ambient"
+        });
+      }
+    }
+
+    function whistleBurst() {
+      const originX = w * 0.58;
+      const originY = h * 0.48;
+
+      for (let i = 0; i < 120; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 3.2 + 0.8;
+        particles.push({
+          x: originX,
+          y: originY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: Math.random() * 3 + 1,
+          alpha: Math.random() * 0.8 + 0.2,
+          life: Math.random() * 70 + 45,
+          mode: "burst"
+        });
+      }
+    }
+
+    function updateParticles() {
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.mode === "ambient") {
+          if (p.x < -10) p.x = w + 10;
+          if (p.x > w + 10) p.x = -10;
+          if (p.y < -10) p.y = h + 10;
+          if (p.y > h + 10) p.y = -10;
+        } else {
+          p.vx *= 0.986;
+          p.vy *= 0.986;
+          p.life -= 1;
+          p.alpha *= 0.985;
+          if (p.life <= 0 || p.alpha < 0.02) {
+            particles.splice(i, 1);
+          }
+        }
+      }
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, w, h);
+
+      for (const p of particles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(89,220,124,${p.alpha})`;
+        ctx.shadowBlur = p.mode === "burst" ? 18 : 8;
+        ctx.shadowColor = "rgba(89,220,124,0.55)";
+        ctx.fill();
+      }
+
+      ctx.shadowBlur = 0;
+    }
+
+    function animate(ts) {
+      if (!lastTime) lastTime = ts;
+      lastTime = ts;
+
+      updateParticles();
+      drawParticles();
+      requestAnimationFrame(animate);
+    }
+
+    resizeCanvas();
+    createAmbientParticles();
+    requestAnimationFrame(animate);
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createAmbientParticles();
+      burstTriggered = false;
+      scheduleBurst();
+    });
+
+    function scheduleBurst() {
+      setTimeout(() => {
+        whistleBurst();
+        burstTriggered = true;
+      }, 900);
+    }
+
+    scheduleBurst();
+
+    // =========================
+    // OPTIONAL SOUND
+    // =========================
+    // whistle.mp3 гэдэг файл index.html-тэйгээ нэг folder дотор хийвэл ажиллана
+    const soundButton = document.getElementById("soundToggle");
+    let soundEnabled = false;
+    let whistleAudio = null;
+
+    try {
+      whistleAudio = new Audio("whistle.mp3");
+      whistleAudio.preload = "auto";
+    } catch (e) {}
+
+    soundButton.addEventListener("click", () => {
+      soundEnabled = !soundEnabled;
+      soundButton.textContent = soundEnabled ? "🔊 sound on" : "🔊 sound off";
+
+      if (soundEnabled && whistleAudio) {
+        whistleAudio.currentTime = 0;
+        whistleAudio.play().catch(() => {});
+      }
+    });
+
+    // page load дээр sound allow байвал тоглуулах оролдлого
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        if (soundEnabled && whistleAudio) {
+          whistleAudio.currentTime = 0;
+          whistleAudio.play().catch(() => {});
+        }
+      }, 650);
+    });
+
+    // =========================
+    // LOOP ANIMATION
+    // =========================
+    const selectors = [
+      ".whistle",
+      ".core-light",
+      ".pulse1",
+      ".pulse2",
+      ".pulse3",
+      ".five-block",
+      ".text-block",
+      ".year",
+      ".ambient-glow",
+      ".scan-line",
+      ".caption"
+    ];
+
+    function restartAnimations() {
+      document.querySelectorAll(selectors.join(",")).forEach(el => {
+        el.style.animation = "none";
+        void el.offsetWidth;
+        el.style.animation = "";
+      });
+
+      whistleBurst();
+
+      if (soundEnabled && whistleAudio) {
+        whistleAudio.currentTime = 0;
+        whistleAudio.play().catch(() => {});
+      }
+    }
+
+    setInterval(restartAnimations, 8000);
+  </script>
+</body>
+</html>
